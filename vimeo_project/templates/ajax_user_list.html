@@ -1,0 +1,13 @@
+<div id='id_user_list'>
+<div id="results_number">{{ user_list|length }}  results </div><br />
+{% for user in user_list %}
+	<div>
+	<div id="id_username" style="color:blue;">Name: {{user.name}}<br /></div>
+	 Url: <a href="{{ user.url }}" style="color:black;" target="_blank" >{{user.url}}</a><br />
+	 Paying User : {{user.paying_user|yesno:"Yes,No"}}<br /> 
+	 Video Uploaded: {{user.video_upload|yesno:"Yes,No"}}<br />
+	 Staff Pick Video: {{user.staff_pick_video|yesno:"Yes,No"}}
+	 </div><br />
+{% endfor %}
+
+</div>
