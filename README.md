@@ -1,6 +1,6 @@
 #Vimeo user information store and seach with filter
 
-**Assignment Objective:** To pull information from Vimeo users and provide a basic front-end to search various attributes of those users.
+**Assignment Objective:** To pull information from Vimeo users and provide a basic front-end to searrch various attributes of those users.
 
 There is two parts in this assignment :
 
@@ -16,21 +16,6 @@ There is two parts in this assignment :
 
 For this part I have written a script vimeo_crowl.py.
 
-
-run script like below ...
-
-**python \<filename\> \<start_user_id\> \<end_user_id\> \<total_no_user\>**
-
-In vimeo,we can find every user page by his id like - http://vimeo.com/user150089
-
-each user has unique id start from user1,user2, ... and so on last upto user16000000 (if total users in vimeo are 16 million )
-
-but some user has deleted profile so profile page not exist error found. then we left that user's page and continue
-
-if I want to store 50 user from id 18000 to 19000 then run script using command.....
-
-python vimeo_crowl.py 18000 19000 50
-
 Before run the script create database with name 'vimeodata' and create table vimeouser_vimeouser in that db using mysql.
 
 sql command.....
@@ -42,13 +27,29 @@ sql command.....
 **CREATE TABLE vimeouser_vimeouser ( id integer AUTO_INCREMENT NOT NULL PRIMARY KEY,name varchar(100) NOT NULL, url varchar(250) NOT NULL,paying_user bool NOT NULL, staff_pick_video bool NOT NULL,video_upload bool NOT NULL );**
 
 
-after getting user page content then using beautifulsoup crowl that page and find user information and store into database.
+In vimeo,we can find every user page by his id like - http://vimeo.com/user150089
 
-but in user's profile page there is no information of staff pick video..... 
-so there are two ways to find user has staff pick video or not 
+each user has unique id start from user1,user2, ... and so on last upto user16000000 (if total users in vimeo are 16 million )
+
+but some user has deleted profile so profile page not exist error found. then we left that user's page and continue upto total no of user given in command line.
+
+run script like below ...
+
+**python \<filename\> \<start_user_id\> \<end_user_id\> \<total_no_user\>**
+
+If I want to store 50 user from id 18000 to 19000 then run script using command.....
+
+python vimeo_crowl.py 18000 19000 50
+
+This script basically fetch all user page from start_user_id to end_user_id upto total_no_user
+
+In above command if we get 50 users at http://vimeo.com/user18410  then script will stop to fetch next user.
+
+after getting user page content then using beautifulsoup crowl that page and find user information and store into database.
+but in user's profile page there is no information of staff pick video..... so there are two ways to find user has staff pick video or not.
 
 1.check all video of each user (more than 50000 page fetching)<br />
-2.visit http://vimeo.com/channels/staffpicks/videos and see all user id and map user from stored user data.(only 522 page fetching)
+2.initial set staff pick video field to False for each user then crowl  http://vimeo.com/channels/staffpicks/videos and collect all user id which have staff pick video and map user url  from stored user data.(basically from user list object )  (only 522 page fetching for any no of users ). If user found then set True for that user.
 
 second method will take less time so I have used second method in my script.
 
@@ -58,7 +59,7 @@ after successfully stored data in database we run django project(vimeo_project)
 
 **2.Create a one-page basic front-end using django and javascript(jquery)**
 
-Before run django project change setting file .. use "vimeodata" database which have users information.
+Before run django project change setting file .use "vimeodata" database which have users information and also change username/password.  
 
 I have used ajax get call request to call url for search and filter with given search input data and filter.
 
